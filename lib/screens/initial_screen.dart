@@ -25,8 +25,12 @@ class _InitialScreenState extends State<InitialScreen> {
         duration: Duration(milliseconds: 1000),
         child: ListView(
           children: [
-            PersonagemCard("Ahri", "Vastiaya", 3, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4A8Cb-SnOTYQd8hyXMtFBJy0pJ4X36zZP1w&s"),
-            PersonagemCard("Akali", "Humano", 5, "https://preview.redd.it/ic6a5b0ggfu81.jpg?auto=webp&s=a10d4216642122bd800aa16536f2c9a5b17ca6bb"),
+            PersonagemCard("Ahri", "Vastiaya", 3, "assets/images/ahri.jpg"),
+            PersonagemCard("Ashe", "Humano", 5, "assets/images/ashe.jpg"),
+            PersonagemCard("Evelyn", "Demônio", 5, "assets/images/evelyn.jpg"),
+            PersonagemCard("Mordekaiser", "Humano", 5, "assets/images/mordekaiser.jpg"),
+            PersonagemCard("Kassadin", "Void", 5, "assets/images/kassadin.jpg"),
+            PersonagemCard("Teemo", "Yordle ", 5, "assets/images/teemo.jpg"),
           ],
         ),
       ),

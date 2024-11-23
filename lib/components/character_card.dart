@@ -52,7 +52,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
                             color: Colors.white,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.network(widget.url,
+                              child: Image.asset(widget.url,
                                 fit: BoxFit.cover,
                               ),
                             ),
