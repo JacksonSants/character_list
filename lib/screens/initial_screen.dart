@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../components/character_card.dart';
 
@@ -17,14 +16,14 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lista de Personagens", style: TextStyle(color: Colors.white,),),
+        title: const Text("Lista de Personagens", style: TextStyle(color: Colors.white,),),
         backgroundColor: Colors.red,
       ),
       body: AnimatedOpacity(
         opacity: (opacity ? 1 : 0),
-        duration: Duration(milliseconds: 1000),
+        duration: const Duration(milliseconds: 1000),
         child: ListView(
-          children: [
+          children: const [
             PersonagemCard("Ahri", "Vastiaya", 3, "assets/images/ahri.jpg"),
             PersonagemCard("Ashe", "Humano", 5, "assets/images/ashe.jpg"),
             PersonagemCard("Evelyn", "Demônio", 5, "assets/images/evelyn.jpg"),
@@ -40,7 +39,7 @@ class _InitialScreenState extends State<InitialScreen> {
             opacity = !opacity;
           });
         },
-        child: Icon(Icons.remove_red_eye),
+        child: const Icon(Icons.remove_red_eye),
       ),
     );
   }

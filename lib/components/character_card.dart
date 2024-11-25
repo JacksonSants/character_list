@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:personagem_list/components/strength_status.dart';
 
@@ -58,17 +57,13 @@ class _PersonagemCardState extends State<PersonagemCard> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  child: Text("${widget.name}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-                                ),
-                                Container(
-                                  child: Text("${widget.race}", style: TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.w400),),
-                                ),
+                                Text(widget.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+                                Text(widget.race, style: const TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.w400),),
                                 StrengthBar(strengthstatus: widget.strength)
                               ],
                             ),
@@ -92,9 +87,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
                                     setState(() {
                                       lifePoint++;
                                     });
-                                  }, child: Container(
-                                child: Icon(Icons.arrow_drop_up),
-                              )),
+                                  }, child: const Icon(Icons.arrow_drop_up)),
                             ),
                           ),
                           Padding(
@@ -114,9 +107,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
                                         lifePoint = 0;
                                       }
                                     });
-                                  }, child: Container(
-                                child: Icon(Icons.arrow_drop_down),
-                              )),
+                                  }, child: const Icon(Icons.arrow_drop_down)),
                             ),
                           )
                         ],
@@ -130,15 +121,15 @@ class _PersonagemCardState extends State<PersonagemCard> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
+                      child: SizedBox(
                           width: 250,
                           child: LinearProgressIndicator( color: Colors.orange, value: lifePoint/100,)),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       child: Text(
                         "Nível: $lifePoint",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        style: const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ],
