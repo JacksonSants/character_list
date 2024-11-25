@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personagem_list/screens/form_screen.dart';
-import '../components/character_card.dart';
+import '../data/character_inherited.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
@@ -25,22 +25,19 @@ class _InitialScreenState extends State<InitialScreen> {
         backgroundColor: Colors.red,
       ),
       body: ListView(
-        children: const [
-          PersonagemCard("Ahri", "Vastiaya", 3, "assets/images/ahri.jpg"),
-          PersonagemCard("Ashe", "Humano", 5, "assets/images/ashe.jpg"),
-          PersonagemCard("Evelyn", "Demônio", 5, "assets/images/evelyn.jpg"),
-          PersonagemCard(
-              "Mordekaiser", "Humano", 5, "assets/images/mordekaiser.jpg"),
-          PersonagemCard("Kassadin", "Void", 5, "assets/images/kassadin.jpg"),
-          PersonagemCard("Teemo", "Yordle ", 5, "assets/images/teemo.jpg"),
-        ],
+        padding: const EdgeInsets.only(top: 8, bottom:  70),
+        children: CharacterInherited.of(context).characterList
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        splashColor: Colors.red,
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => FormScreen()));
+            context,
+            MaterialPageRoute(builder: (newContext) => FormScreen(characterContext: context,)),
+          );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.red,),
       ),
     );
   }

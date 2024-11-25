@@ -1,20 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:personagem_list/data/character_inherited.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+  const FormScreen({required this.characterContext, super.key});
+
+  final BuildContext characterContext;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
 }
 
 class _FormScreenState extends State<FormScreen> {
-  var nameController = TextEditingController();
-  var raceController = TextEditingController();
-  var nomeController = TextEditingController();
-  var lifePointController = TextEditingController();
-  var strengthController = TextEditingController();
-  var urlController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController raceController = TextEditingController();
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController strengthController = TextEditingController();
+  TextEditingController urlController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
+  valueValidate(String? value){
+    if(value != null && value.isEmpty){
+      return true;
+    }
+
+    return false;
+  }
+
+  lifePointValidator(String? value){
+    if(value!.isEmpty && value.isEmpty){
+      if(int.parse(value) < 1 ||
+          int.parse(value) > 100){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  strengthValidator(String? value){
+    if(value!.isEmpty && value.isEmpty){
+      if(int.parse(value) < 1 ||
+          int.parse(value) > 5){
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +64,23 @@ class _FormScreenState extends State<FormScreen> {
         body: Container(
           color: Colors.red[100],
           child: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: 400,
-                height: 650,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+            child: Container(
+              width: 400,
+              height: 650,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         validator: (String? value) {
-                          if (value != null && value!.isEmpty) {
+                          if (valueValidate(value)) {
                             return "Campo de nome vazio.";
                           }
+                          return null;
                         },
                         controller: nameController,
                         decoration: const InputDecoration(
@@ -60,9 +94,10 @@ class _FormScreenState extends State<FormScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         validator: (String? value) {
-                          if (value != null && value.isEmpty) {
+                          if (valueValidate(value)) {
                             return "Campo de raça vazio";
                           }
+                          return null;
                         },
                         controller: raceController,
                         decoration: const InputDecoration(
@@ -75,27 +110,10 @@ class _FormScreenState extends State<FormScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         validator: (value) {
-                          if (value!.isEmpty || int.parse(value) < 1 ||
-                              int.parse(value) > 100) {
-                            return "Preencha o campo de pontos de vida entre 1 e 100.";
-                          }
-                        },
-                        keyboardType: TextInputType.number,
-                        controller: lifePointController,
-                        decoration: const InputDecoration(
-                            hintText: "Pontos de vida...",
-                            hintStyle: TextStyle(color: Colors.black38),
-                            filled: true),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty || int.parse(value) < 1 ||
-                              int.parse(value) > 5) {
+                          if (strengthValidator(value)) {
                             return "Preencha o campo de força de vida entre 1 e 5.";
                           }
+                          return null;
                         },
                         keyboardType: TextInputType.number,
                         controller: strengthController,
@@ -109,7 +127,7 @@ class _FormScreenState extends State<FormScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (valueValidate(value)) {
                             return "Preencha o campo imagem com uma URL válida.";
                           }
                           return null;
@@ -137,19 +155,16 @@ class _FormScreenState extends State<FormScreen> {
                               .cover,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace? stackTrace) {
-                              return Image.asset("assets/images/no_image.jpg",
+                              return Image.asset("assets/images/no_image.png",
                                 fit: BoxFit.cover,);
                             },),
                         )
                     ),
+
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print(nameController.text);
-                          print(raceController.text);
-                          print(lifePointController.text);
-                          print(strengthController.text);
-                          print(urlController.text);
+                          CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Personagem salvo."))
                           );
@@ -158,7 +173,7 @@ class _FormScreenState extends State<FormScreen> {
                         }
                       },
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               Colors.red)),
                       child: const Text(
                         "Salvar",

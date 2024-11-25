@@ -6,7 +6,10 @@ class PersonagemCard extends StatefulWidget {
   final String race;
   final int strength;
   final String url;
-  const PersonagemCard(this.name, this.race, this.strength, this.url, {super.key});
+
+  PersonagemCard(this.name, this.race, this.strength, this.url, {super.key});
+
+  int lifePoint = 100;
 
   @override
   State<PersonagemCard> createState() => _PersonagemCardState();
@@ -14,7 +17,12 @@ class PersonagemCard extends StatefulWidget {
 
 class _PersonagemCardState extends State<PersonagemCard> {
 
-  int lifePoint = 100;
+  bool assetOrNetwork (){
+    if(widget.url.contains("http")){
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,9 @@ class _PersonagemCardState extends State<PersonagemCard> {
                             color: Colors.white,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.asset(widget.url,
+                              child: assetOrNetwork() ? Image.asset(widget.url,
+                                fit: BoxFit.cover,
+                              ) : Image.network(widget.url,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -85,7 +95,10 @@ class _PersonagemCardState extends State<PersonagemCard> {
                                   ),
                                   onPressed: (){
                                     setState(() {
-                                      lifePoint++;
+                                      widget.lifePoint++;
+                                      if(widget.lifePoint > 100){
+                                        widget.lifePoint = 100;
+                                      }
                                     });
                                   }, child: const Icon(Icons.arrow_drop_up)),
                             ),
@@ -102,9 +115,9 @@ class _PersonagemCardState extends State<PersonagemCard> {
                                   ),
                                   onPressed: (){
                                     setState(() {
-                                      lifePoint --;
-                                      if(lifePoint < 0){
-                                        lifePoint = 0;
+                                      widget.lifePoint --;
+                                      if(widget.lifePoint < 0){
+                                        widget.lifePoint = 0;
                                       }
                                     });
                                   }, child: const Icon(Icons.arrow_drop_down)),
@@ -123,12 +136,12 @@ class _PersonagemCardState extends State<PersonagemCard> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: 250,
-                          child: LinearProgressIndicator( color: Colors.orange, value: lifePoint/100,)),
+                          child: LinearProgressIndicator( color: Colors.orange, value: widget.lifePoint/100,)),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text(
-                        "Nível: $lifePoint",
+                        "Vida: ${widget.lifePoint}",
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),

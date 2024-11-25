@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:personagem_list/screens/form_screen.dart';
 import 'package:personagem_list/screens/initial_screen.dart';
+
+import 'data/character_inherited.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +18,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: InitialScreen(),
+        home: CharacterInherited(child: const InitialScreen()),
     );
   }
 }
