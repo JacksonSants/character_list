@@ -55,6 +55,12 @@ class _FormScreenState extends State<FormScreen> {
       key: _formKey,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: const Text(
             "Formulário de personagem",
             style: TextStyle(color: Colors.white),
