@@ -16,9 +16,8 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
-
-  bool assetOrNetwork (){
-    if(widget.url.contains("http")){
+  bool assetOrNetwork() {
+    if (widget.url.contains("http")) {
       return false;
     }
     return true;
@@ -29,15 +28,12 @@ class _CharacterCardState extends State<CharacterCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10)
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         child: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10)),
+                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
               height: 170,
             ),
             Column(
@@ -45,8 +41,7 @@ class _CharacterCardState extends State<CharacterCard> {
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.red[100],
-                      borderRadius: BorderRadius.circular(10)
-                  ),
+                      borderRadius: BorderRadius.circular(10)),
                   height: 120,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,11 +54,15 @@ class _CharacterCardState extends State<CharacterCard> {
                             color: Colors.white,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: assetOrNetwork() ? Image.asset(widget.url,
-                                fit: BoxFit.cover,
-                              ) : Image.network(widget.url,
-                                fit: BoxFit.cover,
-                              ),
+                              child: assetOrNetwork()
+                                  ? Image.asset(
+                                      widget.url,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      widget.url,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                           Container(
@@ -72,8 +71,19 @@ class _CharacterCardState extends State<CharacterCard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
-                                Text(widget.race, style: const TextStyle(fontSize: 15, color: Colors.red, fontWeight: FontWeight.w400),),
+                                Text(
+                                  widget.name,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  widget.race,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w400),
+                                ),
                                 StrengthBar(strengthstatus: widget.strength)
                               ],
                             ),
@@ -91,16 +101,16 @@ class _CharacterCardState extends State<CharacterCard> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      alignment: Alignment.center
-                                  ),
-                                  onPressed: (){
+                                      alignment: Alignment.center),
+                                  onPressed: () {
                                     setState(() {
                                       widget.lifePoint++;
-                                      if(widget.lifePoint > 100){
+                                      if (widget.lifePoint > 100) {
                                         widget.lifePoint = 100;
                                       }
                                     });
-                                  }, child: const Icon(Icons.arrow_drop_up)),
+                                  },
+                                  child: const Icon(Icons.arrow_drop_up)),
                             ),
                           ),
                           Padding(
@@ -111,23 +121,22 @@ class _CharacterCardState extends State<CharacterCard> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      alignment: Alignment.center
-                                  ),
-                                  onPressed: (){
+                                      alignment: Alignment.center),
+                                  onPressed: () {
                                     setState(() {
-                                      widget.lifePoint --;
-                                      if(widget.lifePoint < 0){
+                                      widget.lifePoint--;
+                                      if (widget.lifePoint < 0) {
                                         widget.lifePoint = 0;
                                       }
                                     });
-                                  }, child: const Icon(Icons.arrow_drop_down)),
+                                  },
+                                  child: const Icon(Icons.arrow_drop_down)),
                             ),
                           )
                         ],
                       ),
                     ],
                   ),
-
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,13 +145,17 @@ class _CharacterCardState extends State<CharacterCard> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                           width: 250,
-                          child: LinearProgressIndicator( color: Colors.orange, value: widget.lifePoint/100,)),
+                          child: LinearProgressIndicator(
+                            color: Colors.orange,
+                            value: widget.lifePoint / 100,
+                          )),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text(
                         "Vida: ${widget.lifePoint}",
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ],

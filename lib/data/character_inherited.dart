@@ -16,12 +16,13 @@ class CharacterInherited extends InheritedWidget {
     CharacterCard("Teemo", "Yordle ", 5, "assets/images/teemo.jpg"),
   ];
 
-  void newCharacter(String name, String race, int strength, String image){
+  void newCharacter(String name, String race, int strength, String image) {
     characterList.add(CharacterCard(name, race, strength, image));
   }
 
   static CharacterInherited of(BuildContext context) {
-    final CharacterInherited? result = context.dependOnInheritedWidgetOfExactType<CharacterInherited>();
+    final CharacterInherited? result =
+        context.dependOnInheritedWidgetOfExactType<CharacterInherited>();
     assert(result != null, 'No characterInherited found in context');
     return result!;
   }
