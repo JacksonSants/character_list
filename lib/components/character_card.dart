@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:personagem_list/components/strength_status.dart';
 
-class PersonagemCard extends StatefulWidget {
+class CharacterCard extends StatefulWidget {
   final String name;
   final String race;
   final int strength;
   final String url;
 
-  PersonagemCard(this.name, this.race, this.strength, this.url, {super.key});
+  CharacterCard(this.name, this.race, this.strength, this.url, {super.key});
 
   int lifePoint = 100;
 
   @override
-  State<PersonagemCard> createState() => _PersonagemCardState();
+  State<CharacterCard> createState() => _CharacterCardState();
 }
 
-class _PersonagemCardState extends State<PersonagemCard> {
+class _CharacterCardState extends State<CharacterCard> {
 
   bool assetOrNetwork (){
     if(widget.url.contains("http")){
