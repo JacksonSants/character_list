@@ -19,18 +19,17 @@ class _FormScreenState extends State<FormScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  valueValidate(String? value){
-    if(value != null && value.isEmpty){
+  valueValidate(String? value) {
+    if (value != null && value.isEmpty) {
       return true;
     }
 
     return false;
   }
 
-  lifePointValidator(String? value){
-    if(value!.isEmpty && value.isEmpty){
-      if(int.parse(value) < 1 ||
-          int.parse(value) > 100){
+  lifePointValidator(String? value) {
+    if (value!.isEmpty && value.isEmpty) {
+      if (int.parse(value) < 1 || int.parse(value) > 100) {
         return true;
       }
     }
@@ -38,10 +37,9 @@ class _FormScreenState extends State<FormScreen> {
     return false;
   }
 
-  strengthValidator(String? value){
-    if(value!.isEmpty && value.isEmpty){
-      if(int.parse(value) < 1 ||
-          int.parse(value) > 5){
+  strengthValidator(String? value) {
+    if (value!.isEmpty && value.isEmpty) {
+      if (int.parse(value) < 1 || int.parse(value) > 5) {
         return true;
       }
     }
@@ -56,7 +54,7 @@ class _FormScreenState extends State<FormScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -74,8 +72,7 @@ class _FormScreenState extends State<FormScreen> {
               width: 400,
               height: 650,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -91,7 +88,8 @@ class _FormScreenState extends State<FormScreen> {
                         controller: nameController,
                         decoration: const InputDecoration(
                             hintText: "Nome do personagem...",
-                            hintStyle: TextStyle(color: Colors.black38,
+                            hintStyle: TextStyle(
+                              color: Colors.black38,
                             ),
                             filled: true),
                       ),
@@ -154,33 +152,40 @@ class _FormScreenState extends State<FormScreen> {
                         height: 160,
                         decoration: BoxDecoration(
                           color: Colors.red[100],
-                          borderRadius: BorderRadius.circular(5),),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.network(urlController.text, fit: BoxFit
-                              .cover,
+                          child: Image.network(
+                            urlController.text,
+                            fit: BoxFit.cover,
                             errorBuilder: (BuildContext context,
                                 Object exception, StackTrace? stackTrace) {
-                              return Image.asset("assets/images/no_image.png",
-                                fit: BoxFit.cover,);
-                            },),
-                        )
-                    ),
-
+                              return Image.asset(
+                                "assets/images/no_image.png",
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        )),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
+                          CharacterInherited.of(widget.characterContext)
+                              .newCharacter(
+                                  nameController.text,
+                                  raceController.text,
+                                  int.parse(strengthController.text),
+                                  urlController.text);
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Personagem salvo."))
-                          );
+                              const SnackBar(
+                                  content: Text("Personagem salvo.")));
 
                           Navigator.pop(context);
                         }
                       },
                       style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                              Colors.red)),
+                          backgroundColor: WidgetStateProperty.all(Colors.red)),
                       child: const Text(
                         "Salvar",
                         style: TextStyle(color: Colors.white),

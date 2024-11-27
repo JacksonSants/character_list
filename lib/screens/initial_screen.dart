@@ -25,19 +25,24 @@ class _InitialScreenState extends State<InitialScreen> {
         backgroundColor: Colors.red,
       ),
       body: ListView(
-        padding: const EdgeInsets.only(top: 8, bottom:  70),
-        children: CharacterInherited.of(context).characterList
-      ),
+          padding: const EdgeInsets.only(top: 8, bottom: 70),
+          children: CharacterInherited.of(context).characterList),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         splashColor: Colors.red,
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (newContext) => FormScreen(characterContext: context,)),
+            MaterialPageRoute(
+                builder: (newContext) => FormScreen(
+                      characterContext: context,
+                    )),
           );
         },
-        child: const Icon(Icons.add, color: Colors.red,),
+        child: const Icon(
+          Icons.add,
+          color: Colors.red,
+        ),
       ),
     );
   }
