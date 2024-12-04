@@ -55,12 +55,14 @@ class CharacterDao {
     return toList(result);
   }
 
-  updateCharacter(){
-
-  }
-
-  deleteCharacter(){
-
+  deleteCharacter(String characterName) async{
+    print("Deletando um personagem $characterName...");
+    final Database db = await getDatabase();
+    db.delete(
+      _characterTable,
+      where: "$_name = ?",
+      whereArgs: [characterName]
+    );
   }
 
   List<CharacterCard> toList(List<Map<String, dynamic>> characterMap) {
