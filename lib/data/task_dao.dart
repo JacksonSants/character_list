@@ -20,8 +20,24 @@ class CharacterDao {
   static const String _image = "image";
 
 
-  saveCharacter(){
+  saveCharacter(CharacterCard character) async{
+    print("Iniciando saveCharacter...");
+    final Database db = await getDatabase();
+    var itemExists = await findOneCharacter(character.name);
+    Map<String, dynamic> characterMap = toMap(character);
 
+    if(itemExists.isEmpty){
+      print("Personagem não encontrado.");
+      return await db.insert(_characterTable, characterMap);
+    }
+    else{
+      print("Tarefa já existe. Atualizando as informações...");
+      return await db.update(
+          _characterTable,
+          characterMap,
+          where: "$_name = ?",
+          whereArgs: [character.name]);
+    }
   }
 
   Future<List<CharacterCard>> findAllCharacter() async{
@@ -63,6 +79,17 @@ class CharacterDao {
     print("Lista de personagem $characterMap");
     return characters;
 
+  }
+
+  Map<String, dynamic> toMap(CharacterCard character){
+    print("Convertando para Map");
+    Map<String, dynamic> characterMap = Map();
+    characterMap[_name] = character.name;
+    characterMap[_race] = character.race;
+    characterMap[_strength] = character.strength;
+    characterMap[_image] = character.url;
+    print("Mapa de tarefas: $characterMap");
+    return characterMap;
   }
 
 }
