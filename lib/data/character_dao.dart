@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:personagem_list/components/character_card.dart';
 import 'package:personagem_list/data/database.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,10 +5,12 @@ import 'package:sqflite/sqflite.dart';
 class CharacterDao {
   // Add your SQL table creation query here
   static const String sqlTable = "CREATE TABLE $_characterTable("
+      "$_id INTEGER PRIMARY KEY AUTOINCREMENT,"
       "$_name TEXT,"
       "$_race TEXT,"
       "$_strength INTEGER,"
       "$_image TEXT)";
+
 
   static const String _characterTable = "Character";
 
@@ -18,6 +18,7 @@ class CharacterDao {
   static const String _race = "race";
   static const String _strength = "strength";
   static const String _image = "image";
+  static const String _id = "id";
 
 
   saveCharacter(CharacterCard character) async{
@@ -31,14 +32,28 @@ class CharacterDao {
       return await db.insert(_characterTable, characterMap);
     }
     else{
-      print("Tarefa já existe. Atualizando as informações...");
-      return await db.update(
-          _characterTable,
-          characterMap,
-          where: "$_name = ?",
-          whereArgs: [character.name]);
+      print("Tarefa já existe...");
     }
   }
+
+  // updateCharacter(CharacterCard character) async {
+  //   print("Iniciando updateCharacter...");
+  //   final Database db = await getDatabase();
+  //   var itemExists = await findOneCharacter(character.id);
+  //   Map<String, dynamic> characterMap = toMap(character);
+  //
+  //   if (itemExists.isNotEmpty) {
+  //     print("Personagem encontrado. Realizando atualização.");
+  //     return await db.update(
+  //       _characterTable,
+  //       characterMap,
+  //       where: "id = ?",
+  //       whereArgs: [character.id],
+  //     );
+  //   } else {
+  //     print("Personagem não encontrado...");
+  //   }
+  // }
 
   Future<List<CharacterCard>> findAllCharacter() async{
     print("Acessando findAll...");
@@ -75,7 +90,9 @@ class CharacterDao {
           linha[_name],
           linha[_race],
           linha[_strength],
-          linha[_image]);
+          linha[_image],
+          linha[_id],
+      );
       characters.add(character);
     }
     print("Lista de personagem $characterMap");

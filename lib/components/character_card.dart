@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:personagem_list/components/strength_status.dart';
+import 'package:personagem_list/data/character_dao.dart';
+import 'package:personagem_list/screens/modal_add_form.dart';
 
 class CharacterCard extends StatefulWidget {
   final String name;
   final String race;
   final int strength;
   final String url;
+  final int? id;
 
-  CharacterCard(this.name, this.race, this.strength, this.url, {super.key});
+  CharacterCard(this.name, this.race, this.strength, this.url, this.id,{super.key});
 
   int lifePoint = 100;
 
@@ -21,6 +24,20 @@ class _CharacterCardState extends State<CharacterCard> {
       return false;
     }
     return true;
+  }
+
+  void _deleteCharacter() async {
+    bool isDeleted = await CharacterDao().deleteCharacter(widget.name);
+
+    if (isDeleted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Personagem removido com sucesso."))
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Falha ao remover o personagem."))
+      );
+    }
   }
 
   @override
@@ -96,8 +113,25 @@ class _CharacterCardState extends State<CharacterCard> {
                           Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: SizedBox(
-                              width: 40,
-                              height: 40,
+                              width: 30,
+                              height: 30,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      alignment: Alignment.center,
+                                  backgroundColor: Colors.red),
+                                  onPressed: () {
+                                    _showEditForm(context, widget.id);
+                                  },
+                                  child: const Icon(Icons.edit, color: Colors.white, size: 15,)),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
@@ -116,8 +150,8 @@ class _CharacterCardState extends State<CharacterCard> {
                           Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: SizedBox(
-                              width: 40,
-                              height: 40,
+                              width: 30,
+                              height: 30,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
@@ -132,7 +166,8 @@ class _CharacterCardState extends State<CharacterCard> {
                                   },
                                   child: const Icon(Icons.arrow_drop_down)),
                             ),
-                          )
+                          ),
+
                         ],
                       ),
                     ],
@@ -144,7 +179,7 @@ class _CharacterCardState extends State<CharacterCard> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                          width: 250,
+                          width: 230,
                           child: LinearProgressIndicator(
                             color: Colors.orange,
                             value: widget.lifePoint / 100,
@@ -167,4 +202,127 @@ class _CharacterCardState extends State<CharacterCard> {
       ),
     );
   }
+}
+
+void _showEditForm(BuildContext context, int? id) {
+  final nameController = TextEditingController();
+  final raceController = TextEditingController();
+  final strengthController = TextEditingController();
+  final urlController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  valueValidate(String? value){
+    if(value != null && value.isEmpty){
+      return true;
+    }
+
+    return false;
+  }
+
+  lifePointValidator(String? value){
+    if(value!.isEmpty && value.isEmpty){
+      if(int.parse(value) < 1 ||
+          int.parse(value) > 100){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  strengthValidator(String? value){
+    if(value!.isEmpty && value.isEmpty){
+      if(int.parse(value) < 1 ||
+          int.parse(value) > 5){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Form(
+        key: _formKey,
+        child: AlertDialog(
+          title: const Text('Editar Personagem'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  validator: (String? value) {
+                    if (valueValidate(value)) {
+                      return "Campo de nome vazio.";
+                    }
+                    return null;
+                  },
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    hintText: "Nome...",
+                  ),
+                ),
+                TextFormField(
+                  validator: (String? value) {
+                    if (valueValidate(value)) {
+                      return "Campo de raça vazio.";
+                    }
+                    return null;
+                  },
+                  controller: raceController,
+                  decoration: const InputDecoration(
+                      hintText: "Raça..."
+                  ),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (strengthValidator(value)) {
+                      return "Preencha o campo de força de vida entre 1 e 5.";
+                    }
+                    return null;
+                  },
+                  controller: strengthController,
+                  decoration: const InputDecoration(
+                      hintText: "Força..."
+                  ),
+                ),
+                TextFormField(
+                  validator: (String? value) {
+                    if (valueValidate(value)) {
+                      return "Campo de nome vazio.";
+                    }
+                    return null;
+                  },
+                  controller: urlController,
+                  decoration: const InputDecoration(
+                      hintText: "Url da imagem..."
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Fecha o dialog
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if(_formKey.currentState!.validate()){
+
+                }
+                Navigator.of(context).pop(); // Fecha o dialog após salvar
+              },
+              child: const Text('Salvar'),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

@@ -8,16 +8,16 @@ class CharacterInherited extends InheritedWidget {
   });
 
   final List<CharacterCard> characterList = [
-    CharacterCard("Ahri", "Vastiaya", 3, "assets/images/ahri.jpg"),
-    CharacterCard("Ashe", "Humano", 5, "assets/images/ashe.jpg"),
-    CharacterCard("Evelyn", "Demônio", 5, "assets/images/evelyn.jpg"),
-    CharacterCard("Mordekaiser", "Humano", 5, "assets/images/mordekaiser.jpg"),
-    CharacterCard("Kassadin", "Void", 5, "assets/images/kassadin.jpg"),
-    CharacterCard("Teemo", "Yordle ", 5, "assets/images/teemo.jpg"),
+    CharacterCard("Ahri", "Vastiaya", 3, "assets/images/ahri.jpg", null),
+    CharacterCard("Ashe", "Humano", 5, "assets/images/ashe.jpg", null),
+    CharacterCard("Evelyn", "Demônio", 5, "assets/images/evelyn.jpg", null),
+    CharacterCard("Mordekaiser", "Humano", 5, "assets/images/mordekaiser.jpg", null),
+    CharacterCard("Kassadin", "Void", 5, "assets/images/kassadin.jpg", null),
+    CharacterCard("Teemo", "Yordle ", 5, "assets/images/teemo.jpg", null),
   ];
 
   void newCharacter(String name, String race, int strength, String image) {
-    characterList.add(CharacterCard(name, race, strength, image));
+    characterList.add(CharacterCard(name, race, strength, image, null));
   }
 
   static CharacterInherited of(BuildContext context) {

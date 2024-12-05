@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personagem_list/components/character_card.dart';
 import 'package:personagem_list/data/character_inherited.dart';
+import 'package:personagem_list/data/character_dao.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({required this.characterContext, super.key});
@@ -170,7 +172,10 @@ class _FormScreenState extends State<FormScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
+
+                          CharacterDao().saveCharacter(CharacterCard(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text, null));
+
+                          //CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Personagem salvo."))
                           );
