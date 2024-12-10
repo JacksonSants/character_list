@@ -108,66 +108,91 @@ class _CharacterCardState extends State<CharacterCard> {
                         ],
                       ),
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      alignment: Alignment.center,
-                                  backgroundColor: Colors.red),
-                                  onPressed: () {
-                                    _showEditForm(context, widget.id);
-                                  },
-                                  child: const Icon(Icons.edit, color: Colors.white, size: 15,)),
-                            ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          alignment: Alignment.center,
+                                          backgroundColor: Colors.red),
+                                      onPressed: () {
+                                        _showEditForm(context, widget.id);
+                                      },
+                                      child: const Icon(Icons.edit, color: Colors.white, size: 15,)),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          alignment: Alignment.center,
+                                          backgroundColor: Colors.red),
+                                      onPressed: () {
+                                        CharacterDao().deleteCharacter(widget.name);
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Personagem removido com sucesso. Recarre as informações para vizualizar as alterações."), backgroundColor: Colors.green,));
+                                      },
+                                      child: const Icon(Icons.remove, color: Colors.white, size: 15,)),
+                                ),
+                              ),
+                            ],
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          alignment: Alignment.center),
+                                      onPressed: () {
+                                        setState(() {
+                                          widget.lifePoint++;
+                                          if (widget.lifePoint > 100) {
+                                            widget.lifePoint = 100;
+                                          }
+                                        });
+                                      },
+                                      child: const Icon(Icons.arrow_drop_up)),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: SizedBox(
+                                  width: 30,
+                                  height: 30,
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          alignment: Alignment.center),
+                                      onPressed: () {
+                                        setState(() {
+                                          widget.lifePoint--;
+                                          if (widget.lifePoint < 0) {
+                                            widget.lifePoint = 0;
+                                          }
+                                        });
+                                      },
+                                      child: const Icon(Icons.arrow_drop_down)),
+                                ),
+                              ),
 
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      alignment: Alignment.center),
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.lifePoint++;
-                                      if (widget.lifePoint > 100) {
-                                        widget.lifePoint = 100;
-                                      }
-                                    });
-                                  },
-                                  child: const Icon(Icons.arrow_drop_up)),
-                            ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      alignment: Alignment.center),
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.lifePoint--;
-                                      if (widget.lifePoint < 0) {
-                                        widget.lifePoint = 0;
-                                      }
-                                    });
-                                  },
-                                  child: const Icon(Icons.arrow_drop_down)),
-                            ),
-                          ),
-
                         ],
                       ),
                     ],

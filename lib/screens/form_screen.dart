@@ -177,7 +177,7 @@ class _FormScreenState extends State<FormScreen> {
 
                           //CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Personagem salvo."))
+                              const SnackBar(content: Text("Personagem salvo."), backgroundColor: Colors.green,)
                           );
 
                           Navigator.pop(context);
