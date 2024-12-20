@@ -35,62 +35,79 @@ class _InitialScreenState extends State<InitialScreen> {
         backgroundColor: Colors.red,
       ),
       body: Padding(padding: const EdgeInsets.only(top: 8, bottom: 70),
-      child: FutureBuilder<List<CharacterCard>>(
-        future:  CharacterDao().findAllCharacter(), builder: (context, snapshot){
-          List<CharacterCard>? items = snapshot.data;
-          switch (snapshot.connectionState){
-
-            case ConnectionState.none:
-              return Center(
-                child: Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Carregando...")
-                  ],
-                ),
-              );
-            case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Carregando...")
-                  ],
-                ),
-              );
-            case ConnectionState.active:
-              return Center(
-                child: Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Carregando...")
-                  ],
-                ),
-              );
-            case ConnectionState.done:
-              if(snapshot.hasData && items != null){
-                if(items.isNotEmpty){
-                  return ListView.builder(itemCount: items.length, itemBuilder: (BuildContext context, int index){
-                    final CharacterCard character = items[index];
-                    return character;
-                  });
-                }
+        child: FutureBuilder<List<CharacterCard>>(
+          future: CharacterDao().findAllCharacter(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
                 return Center(
                   child: Column(
-                    mainAxisAlignment:  MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.error_outline, size: 128,),
-                      Text("Sem personagem...", style:  TextStyle(fontSize:  32),)
+                      CircularProgressIndicator(),
+                      Text("Carregando..."),
                     ],
                   ),
                 );
-              }
-              return Text("Erro ao carregar tarefa");
-          }
-          return Text("Erro desconhecido");
-
-      },
-      ),),
+              case ConnectionState.done:
+                if (snapshot.hasData && snapshot.data != null) {
+                  final items = snapshot.data!;
+                  if (items.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final CharacterCard character = items[index];
+                        return Card(
+                          margin: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: Image.network(
+                              character.url,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(Icons.image_not_supported),
+                            ),
+                            title: Text(character.name),
+                            subtitle: Text('Raça: ${character.race} | Força: ${character.strength}'),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error_outline, size: 128),
+                        Text(
+                          "Sem personagem...",
+                          style: TextStyle(fontSize: 32),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, size: 128),
+                      Text(
+                        "Erro ao carregar personagens",
+                        style: TextStyle(fontSize: 32),
+                      ),
+                    ],
+                  ),
+                );
+              default:
+                return Text("Erro desconhecido");
+            }
+          },
+        ),
+      ),
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,

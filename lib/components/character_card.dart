@@ -12,6 +12,27 @@ class CharacterCard extends StatefulWidget {
 
   CharacterCard(this.name, this.race, this.strength, this.url, this.id,{super.key});
 
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'race': race,
+      'strength': strength,
+      'url': url,
+      'id': id,
+    };
+  }
+
+  factory CharacterCard.fromMap(Map<String, dynamic> map) {
+    return CharacterCard(
+      map['name'] ?? 'Unknown', // Valor padrão se 'name' for null
+      map['race'] ?? 'Unknown', // Valor padrão se 'race' for null
+      map['strength'] ?? 0, // Valor padrão se 'strength' for null
+      map['image'] ?? 'https://via.placeholder.com/150', // URL padrão se 'image' for null
+      map['id'] as int?, // 'id' pode ser null
+    );
+  }
+
+
   int lifePoint = 100;
 
   @override

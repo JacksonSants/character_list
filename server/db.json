@@ -1,0 +1,25 @@
+{
+  "serverhttp": [
+    {
+      "name": "Ahri",
+      "race": "Vastiaya",
+      "strength": 5,
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_86.jpg",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Evelyn",
+      "race": "Demoônio",
+      "strength": 4,
+      "url": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Evelyn",
+      "race": "Demoônio",
+      "strength": 4,
+      "url": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg"
+    }
+  ]
+}
