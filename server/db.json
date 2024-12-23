@@ -8,18 +8,12 @@
       "id": 1
     },
     {
-      "id": 2,
       "name": "Evelyn",
-      "race": "Demoônio",
+      "race": "Demônio",
       "strength": 4,
-      "url": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg"
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg",
+      "id": 2
     },
     {
-      "id": 2,
-      "name": "Evelyn",
-      "race": "Demoônio",
-      "strength": 4,
-      "url": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg"
-    }
   ]
 }

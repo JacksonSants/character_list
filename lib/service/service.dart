@@ -7,7 +7,7 @@ import 'package:personagem_list/components/character_card.dart';
 import 'http_interceptor.dart';
 
 class CharacterService {
-  static const String url = "http://10.0.0.191:3000/";
+  static const String url = "http://192.168.18.147:3000/";
   static const String resource = "serverhttp/";
 
   http.Client client = InterceptedClient.build(interceptors: [LoggerInterceptor()]);
@@ -40,7 +40,6 @@ class CharacterService {
             "Erro ao buscar personagens. Código: ${response.statusCode}");
       }
 
-      // Decodifica diretamente os dados em serverhttp
       List<dynamic> personagensDynamic = json.decode(response.body);
 
       return personagensDynamic.map((jMap) => CharacterCard.fromMap(jMap)).toList();

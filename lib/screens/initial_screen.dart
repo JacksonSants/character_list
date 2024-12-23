@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:personagem_list/components/character_card.dart';
 import 'package:personagem_list/data/character_dao.dart';
 import 'package:personagem_list/screens/form_screen.dart';
+import 'package:personagem_list/service/service.dart';
 import '../data/character_inherited.dart';
 
 class InitialScreen extends StatefulWidget {
@@ -12,6 +13,13 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+
+  final CharacterService characterService = CharacterService();
+
+  Future<List<CharacterCard>> _getAll() async {
+    return await characterService.getAllCharacters();
+  }
+
   bool opacity = true;
 
   @override
@@ -34,76 +42,67 @@ class _InitialScreenState extends State<InitialScreen> {
         ),
         backgroundColor: Colors.red,
       ),
-      body: Padding(padding: const EdgeInsets.only(top: 8, bottom: 70),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 70),
         child: FutureBuilder<List<CharacterCard>>(
-          future: CharacterDao().findAllCharacter(),
+          future: _getAll(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
               case ConnectionState.waiting:
               case ConnectionState.active:
-                return Center(
+                return const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(),
-                      Text("Carregando..."),
+                      Text('Carregando...'),
                     ],
                   ),
                 );
               case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Erro ao carregar personagens: ${snapshot.error}'),
+                  );
+                }
+
                 if (snapshot.hasData && snapshot.data != null) {
-                  final items = snapshot.data!;
-                  if (items.isNotEmpty) {
+                  final character = snapshot.data!;
+                  if (character.isNotEmpty) {
                     return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final CharacterCard character = items[index];
-                        return Card(
-                          margin: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: Image.network(
-                              character.url,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Icon(Icons.image_not_supported),
-                            ),
-                            title: Text(character.name),
-                            subtitle: Text('Raça: ${character.race} | Força: ${character.strength}'),
-                          ),
+                      itemCount: character.length,
+                      itemBuilder: (context, index) {
+                        final currentCharacte = character[index];
+                        return CharacterCard(
+                          currentCharacte.name,
+                          currentCharacte.race,
+                          currentCharacte.strength,
+                          currentCharacte.url,
+                          currentCharacte.id,
                         );
                       },
                     );
+                  } else {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline, size: 128),
+                          Text(
+                            'Não há nenhum personagem.',
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ],
+                      ),
+                    );
                   }
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.error_outline, size: 128),
-                        Text(
-                          "Sem personagem...",
-                          style: TextStyle(fontSize: 32),
-                        ),
-                      ],
-                    ),
+                } else {
+                  return const Center(
+                    child: Text('Erro ao carregar personagens.'),
                   );
                 }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.error_outline, size: 128),
-                      Text(
-                        "Erro ao carregar personagens",
-                        style: TextStyle(fontSize: 32),
-                      ),
-                    ],
-                  ),
-                );
-              default:
-                return Text("Erro desconhecido");
+
             }
           },
         ),

@@ -3,7 +3,6 @@ import 'package:personagem_list/data/database.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CharacterDao {
-  // Add your SQL table creation query here
   static const String sqlTable = "CREATE TABLE $_characterTable("
       "$_id INTEGER PRIMARY KEY AUTOINCREMENT,"
       "$_name TEXT,"
@@ -35,25 +34,6 @@ class CharacterDao {
       print("Tarefa já existe...");
     }
   }
-
-  // updateCharacter(CharacterCard character) async {
-  //   print("Iniciando updateCharacter...");
-  //   final Database db = await getDatabase();
-  //   var itemExists = await findOneCharacter(character.id);
-  //   Map<String, dynamic> characterMap = toMap(character);
-  //
-  //   if (itemExists.isNotEmpty) {
-  //     print("Personagem encontrado. Realizando atualização.");
-  //     return await db.update(
-  //       _characterTable,
-  //       characterMap,
-  //       where: "id = ?",
-  //       whereArgs: [character.id],
-  //     );
-  //   } else {
-  //     print("Personagem não encontrado...");
-  //   }
-  // }
 
   Future<List<CharacterCard>> findAllCharacter() async{
     print("Acessando findAll...");
