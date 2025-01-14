@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:personagem_list/components/strength_status.dart';
 import 'package:personagem_list/data/character_dao.dart';
+import 'package:personagem_list/screens/Common/deleton_confirmation.dart';
 import 'package:personagem_list/screens/modal_add_form.dart';
+
+import '../service/service.dart';
 
 class CharacterCard extends StatefulWidget {
   final String name;
@@ -17,18 +20,18 @@ class CharacterCard extends StatefulWidget {
       'name': name,
       'race': race,
       'strength': strength,
-      'url': url,
+      'image': url,
       'id': id,
     };
   }
 
   factory CharacterCard.fromMap(Map<String, dynamic> map) {
     return CharacterCard(
-      map['name'] ?? 'Unknown', // Valor padrão se 'name' for null
-      map['race'] ?? 'Unknown', // Valor padrão se 'race' for null
-      map['strength'] ?? 0, // Valor padrão se 'strength' for null
-      map['image'] ?? 'https://via.placeholder.com/150', // URL padrão se 'image' for null
-      map['id'] as int?, // 'id' pode ser null
+      map['name'] ?? 'Unknown',
+      map['race'] ?? 'Unknown',
+      map['strength'] ?? 0,
+      map['image'] ?? 'https://via.placeholder.com/150',
+      map['id'] != null ? int.tryParse(map['id'].toString()) : null,
     );
   }
 
@@ -40,25 +43,13 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
+  final CharacterService characterService = CharacterService();
+
   bool assetOrNetwork() {
     if (widget.url.contains("http")) {
       return false;
     }
     return true;
-  }
-
-  void _deleteCharacter() async {
-    bool isDeleted = await CharacterDao().deleteCharacter(widget.name);
-
-    if (isDeleted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Personagem removido com sucesso."))
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Falha ao remover o personagem."))
-      );
-    }
   }
 
   @override
@@ -160,9 +151,59 @@ class _CharacterCardState extends State<CharacterCard> {
                                           alignment: Alignment.center,
                                           backgroundColor: Colors.red),
                                       onPressed: () {
-                                        CharacterDao().deleteCharacter(widget.name);
-                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Personagem removido com sucesso. Recarre as informações para vizualizar as alterações."), backgroundColor: Colors.green,));
+                                        showConfirmationDialog(
+                                          context,
+                                          content: "Deseja deletar este personagem?",
+                                          affirmativeOption: "Remover",
+                                        ).then((value) async {
+                                          if (value == true) {
+                                            if (widget.id != null) {
+                                              try {
+                                                print("id: ${widget.id}");
+                                                bool isDeleted = await characterService.deleteCharacter(widget.id!);
+                                                if (isDeleted) {
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text(
+                                                        "Personagem removido com sucesso. Recarregue as informações para visualizar as alterações.",
+                                                      ),
+                                                      backgroundColor: Colors.green,
+                                                    ),
+                                                  );
+                                                  setState(() {
+                                                  });
+                                                } else {
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(
+                                                      content: Text("Erro ao remover personagem. Tente novamente."),
+                                                      backgroundColor: Colors.red,
+                                                    ),
+                                                  );
+                                                }
+                                              } catch (e) {
+                                                print("Erro ao deletar personagem: $e");
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text("Erro ao remover personagem."),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
+                                            } else {
+                                              print("ID nulo! Não é possível deletar.");
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(
+                                                  content: Text("Erro: ID do personagem é nulo."),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                            }
+                                          } else {
+                                            print("Operação de exclusão cancelada.");
+                                          }
+                                        });
                                       },
+
                                       child: const Icon(Icons.remove, color: Colors.white, size: 15,)),
                                 ),
                               ),

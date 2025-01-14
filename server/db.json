@@ -1,19 +1,32 @@
 {
+  "users": [
+    {
+      "email": "diego@gmail.com",
+      "password": "$2a$10$7c88z6J1RHCcqgTCRrC4xOXZw61cQc0wOlX03CwVqEw852C6ixIbe",
+      "id": 1
+    }
+  ],
   "serverhttp": [
     {
+      "id": 1,
       "name": "Ahri",
       "race": "Vastiaya",
-      "strength": 5,
-      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_86.jpg",
-      "id": 1
+      "strength": 3,
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_86.jpg"
     },
     {
+      "id": 2,
       "name": "Evelyn",
-      "race": "Demônio",
+      "race": "Demonio",
       "strength": 4,
-      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg",
-      "id": 2
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Evelynn_3.jpg"
     },
     {
+      "id": 3,
+      "name": "Azir",
+      "race": "Ascendente",
+      "strength": 2,
+      "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Azir_0.jpg"
+    }
   ]
 }

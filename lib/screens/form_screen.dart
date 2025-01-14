@@ -14,6 +14,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  final CharacterService characterService = CharacterService();
   TextEditingController nameController = TextEditingController();
   TextEditingController raceController = TextEditingController();
   TextEditingController nomeController = TextEditingController();
@@ -173,12 +174,15 @@ class _FormScreenState extends State<FormScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          CharacterService characterService = CharacterService();
 
-                          //CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Personagem salvo."), backgroundColor: Colors.green,)
-                          );
+                          characterService.register(CharacterCard(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text, 3));
+
+                          // CharacterService characterService = CharacterService();
+                          //
+                          // //CharacterInherited.of(widget.characterContext).newCharacter(nameController.text, raceController.text, int.parse(strengthController.text), urlController.text);
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(content: Text("Personagem salvo."), backgroundColor: Colors.green,)
+                          // );
 
                           Navigator.pop(context);
                         }

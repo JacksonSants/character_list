@@ -7,7 +7,7 @@ import 'package:personagem_list/components/character_card.dart';
 import 'http_interceptor.dart';
 
 class CharacterService {
-  static const String url = "http://192.168.18.147:3000/";
+  static const String url = "http://localhost:3000/";
   static const String resource = "serverhttp/";
 
   http.Client client = InterceptedClient.build(interceptors: [LoggerInterceptor()]);
@@ -49,13 +49,16 @@ class CharacterService {
     }
   }
 
-  Future<bool> delete(String id) async {
-    final url = Uri.parse("${getUrl()}$id");
-    final http.Response response = await client.delete(url);
-
-    if (response.statusCode != 200) {
-      throw HttpException("Erro ao excluir personagem: ${response.body}");
+  Future<bool> deleteCharacter(int id) async {
+    http.Response response = await client.delete(
+      Uri.parse("${getUrl()}$id"),
+      headers: {
+        'Content-type': "application/json",
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
     }
-    return true;
+    return false;
   }
 }
