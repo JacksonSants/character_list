@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:personagem_list/components/character_card.dart';
 import 'package:personagem_list/data/character_dao.dart';
 import 'package:personagem_list/screens/form_screen.dart';
@@ -6,7 +7,9 @@ import 'package:personagem_list/service/service.dart';
 import '../data/character_inherited.dart';
 
 class InitialScreen extends StatefulWidget {
-  const InitialScreen({super.key});
+  final String token;
+
+  const InitialScreen({super.key, required this.token});
 
   @override
   State<InitialScreen> createState() => _InitialScreenState();
@@ -14,7 +17,7 @@ class InitialScreen extends StatefulWidget {
 
 class _InitialScreenState extends State<InitialScreen> {
 
-  final CharacterService characterService = CharacterService();
+  late CharacterService characterService;
 
   Future<List<CharacterCard>> _getAll() async {
     return await characterService.getAllCharacters();

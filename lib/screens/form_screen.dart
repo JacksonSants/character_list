@@ -14,7 +14,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-  final CharacterService characterService = CharacterService();
+  late CharacterService characterService;
   TextEditingController nameController = TextEditingController();
   TextEditingController raceController = TextEditingController();
   TextEditingController nomeController = TextEditingController();

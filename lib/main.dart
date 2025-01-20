@@ -2,12 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:personagem_list/screens/login_screen.dart';
+import 'package:personagem_list/service/auth_service.dart';
 import 'package:personagem_list/service/service.dart';
 
 void main() {
   runApp(const MyApp());
-  CharacterService service = CharacterService();
-  service.getAllCharacters();
 }
 
 class MyApp extends StatelessWidget {

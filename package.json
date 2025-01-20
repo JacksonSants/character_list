@@ -1,0 +1,21 @@
+{
+  "name": "json-server-auth-example",
+  "version": "1.0.0",
+  "description": "API mock com json-server e json-server-auth",
+  "main": "server.js",
+  "scripts": {
+    "start": "json-server-auth --watch server/db.json -r server/routes.json"
+  },
+  "keywords": [
+    "json-server",
+    "json-server-auth",
+    "api-mock",
+    "auth"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.17.3",
+    "json-server-auth": "^2.1.0"
+  }
+}

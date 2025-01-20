@@ -43,7 +43,7 @@ class CharacterCard extends StatefulWidget {
 }
 
 class _CharacterCardState extends State<CharacterCard> {
-  final CharacterService characterService = CharacterService();
+  late CharacterService characterService;
 
   bool assetOrNetwork() {
     if (widget.url.contains("http")) {

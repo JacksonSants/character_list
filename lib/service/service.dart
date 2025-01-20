@@ -10,30 +10,24 @@ class CharacterService {
   static const String url = "http://localhost:3000/";
   static const String resource = "serverhttp/";
 
+  final String token;
   http.Client client = InterceptedClient.build(interceptors: [LoggerInterceptor()]);
+
+  CharacterService(this.token);
 
   String getUrl() {
     return "$url$resource";
   }
 
-  Future<bool> register(CharacterCard character) async {
-    String jsonPersonagem = json.encode(character.toMap());
-    http.Response response = await client.post(
-      Uri.parse(getUrl()),
-      headers: {
-        'Content-type': "application/json",
-      },
-      body: jsonPersonagem,
-    );
-    if (response.statusCode == 201) {
-      return true;
-    }
-    return false;
-  }
-
   Future<List<CharacterCard>> getAllCharacters() async {
     try {
-      http.Response response = await client.get(Uri.parse(getUrl()));
+      http.Response response = await client.get(
+        Uri.parse(getUrl()),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
       if (response.statusCode != 200) {
         throw HttpException(
@@ -48,6 +42,54 @@ class CharacterService {
       rethrow;
     }
   }
+
+  Future<bool> register(CharacterCard character) async {
+    try {
+      // Converte o objeto CharacterCard em JSON
+      String jsonPersonagem = json.encode(character.toMap());
+
+      // Faz a requisição POST com o token no cabeçalho
+      http.Response response = await client.post(
+        Uri.parse(getUrl()),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // Inclui o token para autenticação
+        },
+        body: jsonPersonagem,
+      );
+
+      // Verifica o status da resposta
+      if (response.statusCode == 201) {
+        print("Personagem registrado com sucesso.");
+        return true;
+      } else {
+        print("Erro ao registrar personagem. Código: ${response.statusCode}");
+        return false;
+      }
+    } catch (e) {
+      print("Erro no método register: $e");
+      return false;
+    }
+  }
+
+
+  // Future<List<CharacterCard>> getAllCharacters() async {
+  //   try {
+  //     http.Response response = await client.get(Uri.parse(getUrl()));
+  //
+  //     if (response.statusCode != 200) {
+  //       throw HttpException(
+  //           "Erro ao buscar personagens. Código: ${response.statusCode}");
+  //     }
+  //
+  //     List<dynamic> personagensDynamic = json.decode(response.body);
+  //
+  //     return personagensDynamic.map((jMap) => CharacterCard.fromMap(jMap)).toList();
+  //   } catch (e) {
+  //     print("Erro no getAllCharacters: $e");
+  //     rethrow;
+  //   }
+  // }
 
   Future<bool> deleteCharacter(int id) async {
     http.Response response = await client.delete(

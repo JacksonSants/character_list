@@ -18,28 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final AuthService authService = AuthService();
 
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      final email = emailController.text;
-      final password = passwordController.text;
-
-      String? token = await authService.login(email, password);
-      if (token != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login realizado com sucesso!")),
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => InitialScreen()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Falha no login. Verifique suas credenciais.")),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -92,10 +70,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                 ),
-                onPressed: (){
-                  CharacterService seervice = CharacterService();
-                  seervice.getAllCharacters();
+                onPressed: () async {
+                  AuthService auth = AuthService();
+
+                  bool isLoggedIn = await auth.login(emailController.text, passwordController.text);
+
+                  if (isLoggedIn) {
+                    String? token = await auth.getToken();
+
+                    if (token != null) {
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (newContext) => InitialScreen(token: token)),
+                      );
+                      print("Serviço de personagem inicializado.");
+                    } else {
+                      print("Erro: token não encontrado após o login.");
+                    }
+                  } else {
+                    print("Falha no login.");
+                  }
                 },
+
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
