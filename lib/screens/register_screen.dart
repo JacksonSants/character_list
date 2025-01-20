@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../service/auth_service.dart';
+import 'initial_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -17,26 +18,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
-      final email = emailController.text;
-      final password = passwordController.text;
-      final confirmPassword = confirmPasswordController.text;
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
+      final confirmPassword = confirmPasswordController.text.trim();
 
       if (password != confirmPassword) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("As senhas não coincidem.")),
+          const SnackBar(content: Text("As senhas não coincidem.")),
         );
         return;
       }
-
       bool success = await authService.register(email, password);
+
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Cadastro realizado com sucesso!")),
-        );
-        Navigator.pop(context);
+        final token = await authService.getToken();
+
+        if (token != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (newContext) => InitialScreen(token: token),
+            ),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Cadastro realizado com sucesso!")),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Falha ao recuperar o token. Faça login novamente.")),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Falha no cadastro. Tente novamente.")),
+          const SnackBar(content: Text("Falha no cadastro. Tente novamente.")),
         );
       }
     }
